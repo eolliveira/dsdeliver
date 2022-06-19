@@ -57,4 +57,13 @@ public class OrderService {
         return new OrderDTO(order);
     }
 
+    @Transactional
+    public OrderDTO setDelivered(Long id) {
+        Optional<Order> opt = repository.findById(id);
+        opt.orElseThrow(() -> new ResourceNotFoundException("Order id: " + id + " not found"));
+        opt.get().setStatus(OrderStatus.DELIVERED);
+        Order order = repository.save(opt.get());
+        return new OrderDTO(order);
+    }
+
 }
